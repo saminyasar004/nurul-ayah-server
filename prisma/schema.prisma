@@ -4,27 +4,32 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Surah {
   id              Int      @id @default(autoincrement())
   number          Int      @unique
-  name            String
-  transliteration String
-  translation     String
+  nameArabic      String
+  nameEnglish     String
+  nameTranslation String
   type            String
   totalVerses     Int
   ayahs           Ayah[]
 }
 
 model Ayah {
-  id          Int    @id @default(autoincrement())
-  number      Int
-  textArabic  String
-  textEnglish String
-  surahId     Int
-  surah       Surah  @relation(fields: [surahId], references: [id])
+  id            Int     @id @default(autoincrement())
+  number        Int     @unique
+  numberInSurah Int
+  juz           Int
+  page          Int
+  hizb          Int
+  sajda         Boolean @default(false)
+  textArabic    String
+  textEnglish   String
+  surahId       Int
+  surah         Surah   @relation(fields: [surahId], references: [id])
 
   @@index([textEnglish])
+  @@index([textArabic])
 }
